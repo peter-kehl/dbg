@@ -16,3 +16,5 @@ Those serve to replace `loop` and `recur`. However, in order to indent any outpu
 (dbgloop [initial bindings] forms...)
 (dbgrecur [new binding values])
 ```
+
+[![Clojars Project](https://img.shields.io/clojars/v/dbg.svg)](https://clojars.org/dbg)
