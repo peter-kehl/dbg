@@ -1,8 +1,10 @@
 (ns dbg
  (:require clojure.pprint))
- 
+
+(ns-unmap *ns* 'conj) ;Otherwise the following generated a warning.
 ; TODO macro that detects any ("string-literal" ...). Those are leftovers after removing dbg and similar from (dbg "string-literal description" ...) 
-(def conj
+(def ^:private dbg/conj
+  "clojure.core/conj 'ported' for CLJ 1.4 (for example, for 4clojure.com)"
   (if
     (or
         (> (:major *clojure-version*) 1)
@@ -13,10 +15,9 @@
       ([coll & entries]
        (apply clojure.core/conj coll entries)))))
 
-; different to org.clojure/tools.trace, because here we don't need extra parens ()
-
-;TODO How to ensure the file is loaded as the first (or before a set of files), so that it re-defines 'fn' macro for them?
-; -> future: redefine defn, fn
+; Different to org.clojure/tools.trace, because here we don't need extra parens ()
+; TODO `defn` or `defmacro`. Usage: `unmap` them, and `:refer` to them.
+; 
 
 ;BIG TODO: wrap everythin in with-out-str somehow, so it indents user's calls to print.
 ;TODO (time) - optional?
@@ -158,6 +159,7 @@
 ;TODO pprint of function expression < https://clojuredocs.org/clojure.pprint/pprint#example-5b950e6ce4b00ac801ed9e8a
 ; -- (clojure.pprint/with-pprint-dispatch clojure.pprint/code-dispatch (clojure.pprint/pprint (clojure.edn/read-string
 ;     "code-as-string-here"  )))
+; TODO drop :keyword, but support two string literals. Plus (dbg/str ....).
 ; Insert `dbg "description"` before function calls, like
 ; `(dbg "+ on numbers" + 1 2)`
 ; Beware of lazy sequences when tracing errors: for example, (for) creates a lazy sequence, hence callbacks will be delayed
