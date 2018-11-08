@@ -1,6 +1,8 @@
 # dbg
 
-A Clojure library designed to trace evaluation of functions calls and forms. It indents any output.
+A Clojure library designed to trace evaluation of functions calls, macros and special forms. It indents any output.
+
+It logs entering and leaving functions or macros/special forms. It indents them, along with any inner output - simple and pretty. You prefix function calls with `dbgf` or macros/special forms with `dbg`. No need to add extra parens () around, hence this is practical.
 
 # Usage
 
